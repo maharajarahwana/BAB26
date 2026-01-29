@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>BAB26</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>BAB1</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Latihan Kosakata</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  .card {
+    background: white;
+    padding: 30px;
+    width: 400px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  input {
+    width: 90%;
+    padding: 8px;
+    margin-top: 15px;
+  }
+  button {
+    margin-top: 20px;
+    padding: 8px 15px;
+    cursor: pointer;
+  }
+  .result {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .wrong { color: red; }
+  .correct { color: green; }
+  ol { text-align:left; max-height:400px; overflow:auto; }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <h2 id="question"></h2>
+  <input type="text" id="answerInput" placeholder="Tulis jawaban di sini">
+  <br>
+  <button id="nextBtn">Selanjutnya</button>
+</div>
+
+<script>
+let questions = [
+{ soal: "주거 문화", jawaban: "budaya tempat tinggal" },
+{ soal: "앉아", jawaban: "duduk" },
+{ soal: "음식 문화", jawaban: "budaya makanan" },
+{ soal: "값", jawaban: "harga" },
+{ soal: "구경하다", jawaban: "melihat-lihat" },
+{ soal: "넓은", jawaban: "yang luas" },
+{ soal: "-아도 / -어도 되다", jawaban: "boleh" },
+{ soal: "한식", jawaban: "makanan korea" },
+{ soal: "-는데 / -(으)ㄴ데", jawaban: "tetapi" },
+{ soal: "반찬", jawaban: "lauk-pauk" },
+{ soal: "온돌", jawaban: "pemanas lantai tradisional" },
+{ soal: "젓가락", jawaban: "sumpit" },
+{ soal: "지붕", jawaban: "atap" },
+{ soal: "김", jawaban: "rumput laut kering" },
+{ soal: "한옥", jawaban: "rumah tradisional korea" },
+{ soal: "국", jawaban: "sup" },
+{ soal: "마당", jawaban: "halaman" },
+{ soal: "깍두기", jawaban: "kimchi dari lobak" },
+{ soal: "마루", jawaban: "ruang keluarga" },
+{ soal: "숟가락", jawaban: "sendok" },
+{ soal: "담", jawaban: "tembok" },
+{ soal: "생선구이", jawaban: "ikan panggang" },
+{ soal: "방문", jawaban: "pintu kamar" },
+{ soal: "대문", jawaban: "pintu gerbang utama" },
+{ soal: "아파트", jawaban: "apartemen" },
+{ soal: "동지", jawaban: "titik balik matahari musim dingin" },
+{ soal: "베란다", jawaban: "balkon" },
+{ soal: "거실", jawaban: "ruang tamu" },
+{ soal: "현관", jawaban: "pintu masuk rumah" },
+{ soal: "현관문", jawaban: "pintu utama rumah" },
+{ soal: "답답하다", jawaban: "sesak, gelisah, frustasi" },
+{ soal: "마음에 들다", jawaban: "menyukai sesuatu" },
+{ soal: "난방", jawaban: "pemanas ruangan" },
+{ soal: "포크", jawaban: "garpu" },
+{ soal: "둘러보다", jawaban: "melihat-lihat" },
+{ soal: "생선회", jawaban: "ikan mentah yang diiris tipis" },
+{ soal: "살다", jawaban: "tinggal" },
+{ soal: "죽", jawaban: "bubur" },
+{ soal: "이사하다", jawaban: "pindah rumah" },
+{ soal: "대접하다", jawaban: "menyajikan (makanan)" },
+{ soal: "넓다", jawaban: "luas" },
+{ soal: "밥상", jawaban: "meja makan" },
+{ soal: "나무", jawaban: "pohon" },
+{ soal: "개인", jawaban: "pribadi" },
+{ soal: "나가다", jawaban: "keluar" },
+{ soal: "씹다", jawaban: "mengunyah" },
+{ soal: "차를 마시다", jawaban: "minum teh" },
+{ soal: "잘 먹겠습니다", jawaban: "selamat makan" },
+{ soal: "잘 먹었습니다", jawaban: "terima kasih atas makanannya" },
+];
+
+// Acak soal
+questions = questions.sort(() => Math.random() - 0.5);
+
+let index = 0;
+let score = 0;
+let userAnswers = [];
+
+const questionEl = document.getElementById("question");
+const answerInput = document.getElementById("answerInput");
+const nextBtn = document.getElementById("nextBtn");
+const card = document.querySelector(".card");
+
+function showQuestion() {
+  questionEl.textContent = "Soal " + (index + 1) + ": " + questions[index].soal;
+  answerInput.value = "";
+  answerInput.focus();
+}
+
+nextBtn.addEventListener("click", () => {
+  const userAnswer = answerInput.value.trim().toLowerCase();
+  userAnswers[index] = userAnswer; // simpan jawaban sesuai index
+
+  if (userAnswer === questions[index].jawaban) {
+    score++;
+  }
+
+  index++;
+  if (index < questions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+});
+
+function showResult() {
+  let answerList = "";
+  questions.forEach((q, i) => {
+    if (userAnswers[i] === q.jawaban) {
+      answerList += `<li>${q.soal} = <span class="correct">${q.jawaban}</span></li>`;
+    } else {
+      answerList += `<li>${q.soal} = <span class="correct">${q.jawaban}</span><br>
+                     Jawaban kamu: <span class="wrong">${userAnswers[i] || "(kosong)"}</span></li>`;
+    }
+  });
+
+  card.innerHTML = `
+    <h2>Hasil</h2>
+    <p class="result">Nilai: ${score} / ${questions.length}</p>
+    <hr>
+    <p>Kunci Jawaban:</p>
+    <ol>${answerList}</ol>
+  `;
+}
+
+showQuestion();
+</script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>
